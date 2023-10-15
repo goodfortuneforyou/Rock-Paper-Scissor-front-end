@@ -11,7 +11,7 @@ import {
 function Counter() {
   // const [count, setcount] = useState("")
   const count = useSelector((state) => state.counter.value);
-  console.log(count);
+  console.log(count, counterValue);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(increment());
