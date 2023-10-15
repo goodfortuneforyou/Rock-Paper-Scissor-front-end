@@ -18,7 +18,7 @@ function Counter() {
   }, []);
 
   return (
-    <div className="flex flex-col text-white min-h-screen justify-center items-center py-2">
+    <div className="flex flex-col text-white xm:text-green-600 sm:text-blue-800 xs:text-red-600 min-h-screen justify-center items-center py-2">
       {/* <div> */}
       <button
         aria-label="Increment value"

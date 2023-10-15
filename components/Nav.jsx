@@ -23,7 +23,7 @@ const Navbar = () => {
   console.log(currentAccount, publicValue, counterValue);
   const dispatch = useDispatch();
   return (
-    <nav className=" text-black flex justify-between items-center  w-full h-10 xs:h-8 bg-gray-[#90c9bf] xs:border-b-black border-b sm:border-b-red-500 md:border-b-green-600 border-b-white px-5">
+    <nav className=" text-black flex justify-between items-center  w-full h-10 xs:h-8 bg-gray-[#90c9bf] xss:border-b-black border-b sml:border-b-red-500 mdm:border-b-green-600 border-b-white px-5">
       <div className=" font-bold xs:text-base xs:w-4/5 sm:text-lg sm:w-4/5 md:w-1/3">
         RPS: A Rock Paper Scissor Game
       </div>
