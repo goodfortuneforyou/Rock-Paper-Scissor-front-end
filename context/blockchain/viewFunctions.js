@@ -13,6 +13,7 @@ export const viewFunctions = () => {
   } = hooks;
 
   const dispatch = useDispatch();
+
   const isActivating = useSelectedIsActivating(connector);
   const isActive = useSelectedIsActive(connector);
   const account = useSelectedAccount(connector);
