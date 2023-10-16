@@ -2,7 +2,8 @@
 import "../styles/globals.css";
 import { Inter } from "next/font/google";
 import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { connectors } from "../connectors";
 import { store } from "../context/store";
 import { Provider } from "react-redux";
@@ -14,17 +15,23 @@ export const metadata = {
   description: "A Defi Rock Paper Scissor game",
 };
 
-// const getLibrary = (provider) => new Web3Provider(provider);
-// const connectors = [
-//   [metaMask, metaMaskHooks],
-//   [walletConnectV2, walletConnectV2Hooks],
-//   [coinbaseWallet, coinbaseWalletHooks],
-// ];
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <Web3ReactProvider connectors={connectors}>
+          <ToastContainer
+            position="top-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <Provider store={store}>
             <Navbar />
             <main className="">{children}</main>
