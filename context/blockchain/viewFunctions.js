@@ -4,7 +4,13 @@ import { useDispatch } from "react-redux";
 import { setCurrentAccount } from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
 import { ethers } from "ethers";
-import { gameAbi, gameAddress, tokenAbi, tokenAddress } from "./constants";
+import {
+  gameAbi,
+  gameAddress,
+  rpcProvider,
+  tokenAbi,
+  tokenAddress,
+} from "./constants";
 import { toast } from "react-toastify";
 export const viewFunctions = () => {
   const { connector, hooks } = useWeb3React();
@@ -60,8 +66,15 @@ export const viewFunctions = () => {
   };
 
   const availableGames = async () => {
+    // console.log(ethers);
     try {
-    } catch (error) {}
+      const providers = new ethers.JsonRpcProvider(rpcProvider);
+      const contract = fetchGameContract(providers);
+      const data = await contract.getGameId();
+      console.log(data.toString(), "sdf");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return {
@@ -71,5 +84,6 @@ export const viewFunctions = () => {
     isActive,
     connectWallet,
     currentAccount,
+    availableGames,
   };
 };
