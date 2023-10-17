@@ -5,6 +5,7 @@ import { setCurrentAccount } from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
 import { ethers } from "ethers";
 import {
+  expectedChainId,
   gameAbi,
   gameAddress,
   rpcProvider,
@@ -52,7 +53,7 @@ export const viewFunctions = () => {
       }
     } else if (!isActivating) {
       try {
-        await connector.activate(97);
+        await connector.activate(expectedChainId);
       } catch (error) {
         console.error("Error activating connector:", error);
         connector.resetState();
