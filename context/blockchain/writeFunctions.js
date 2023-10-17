@@ -57,7 +57,7 @@ export const writeFunctions = () => {
       const id = await contract.getGameId();
       // console.log(tx);
       successNotification(
-        `You have successfully created a game of game id ${id.toString()}`
+        `You have successfully created a game of game id ${(id + 1).toString()}`
       );
     } catch (error) {
       console.log(error);

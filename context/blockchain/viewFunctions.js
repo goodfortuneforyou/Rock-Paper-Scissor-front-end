@@ -2,7 +2,10 @@
 import { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { useDispatch } from "react-redux";
-import { setCurrentAccount } from "../slices/viewFunctions/viewSlice";
+import {
+  setAvailableGames,
+  setCurrentAccount,
+} from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
 import { ethers } from "ethers";
 import {
@@ -34,6 +37,10 @@ export const viewFunctions = () => {
 
   const currentAccount = useSelector(
     (state) => state.viewFunctions.currentAccount
+  );
+
+  const availableGames = useSelector(
+    (state) => state.viewFunctions.availableGames
   );
 
   const fetchGameContract = (signerOrProvider) => {
@@ -68,13 +75,35 @@ export const viewFunctions = () => {
     dispatch(setCurrentAccount(account));
   };
 
-  const availableGames = async () => {
+  const getAvailableGames = async () => {
     // console.log(ethers);
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
-      const data = await contract.getGameId();
-      console.log(data.toString(), "sdf");
+      const g = await contract.getGameId();
+      console.log(g.toString());
+      const data = await contract.getAvailableGame();
+      const items = await Promise.all(
+        data.map(async ({ id, stakeAmount, players, state }) => {
+          console.log(
+            id.toString(),
+            stakeAmount.toString(),
+            players[0],
+            players[1],
+            state.toString()
+          );
+
+          return {
+            id: id.toString(),
+            stakeAmount: stakeAmount.toString(),
+            players,
+            state: state.toString(),
+          };
+          // eslint-disable-next-line comma-dangle
+        })
+      );
+      dispatch(setAvailableGames(items));
+      return items;
     } catch (error) {
       console.log(error);
     }
@@ -88,5 +117,6 @@ export const viewFunctions = () => {
     connectWallet,
     currentAccount,
     availableGames,
+    getAvailableGames,
   };
 };
