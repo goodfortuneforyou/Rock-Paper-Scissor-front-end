@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { useDispatch } from "react-redux";
@@ -14,7 +15,7 @@ import {
 } from "./constants";
 import { toast } from "react-toastify";
 export const viewFunctions = () => {
-  const { connector, hooks } = useWeb3React();
+  const { connector, hooks, useContract, signer, provider } = useWeb3React();
   const {
     useSelectedAccount,
     useSelectedChainId,
@@ -43,6 +44,7 @@ export const viewFunctions = () => {
   };
 
   const connectWallet = async () => {
+    console.log(signer, provider);
     if (isActive) {
       if (connector?.deactivate) {
         void connector.deactivate();
