@@ -3,7 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useDispatch } from "react-redux";
 import { setCurrentAccount } from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
-import { ethers } from "ethers";
+import { ethers, toBigInt } from "ethers";
 import {
   expectedChainId,
   gameAbi,
@@ -57,7 +57,9 @@ export const writeFunctions = () => {
       const id = await contract.getGameId();
       // console.log(tx);
       successNotification(
-        `You have successfully created a game of game id ${(id + 1).toString()}`
+        `You have successfully created a game of game id ${(
+          toBigInt(id) + toBigInt(1)
+        ).toString()}`
       );
     } catch (error) {
       console.log(error);
