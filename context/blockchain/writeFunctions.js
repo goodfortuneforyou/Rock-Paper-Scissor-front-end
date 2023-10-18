@@ -69,13 +69,53 @@ export const writeFunctions = () => {
       );
     }
   };
+  const joinGame = async (id, amount) => {
+    try {
+      const signer = await getSigner();
+      const contract = fetchGameContract(signer);
+      const formattedAmount = ethers.parseEther(amount);
+      await approve(amount);
+      const tx = await contract.joinGame(id);
+      const response = await toast.promise(
+        tx.provider.waitForTransaction(tx.hash, 1, 10000),
+        {
+          pending: "Joining game...",
+          success: "Successfully joined the game!",
+          error: (error) => `Failed to join the game: ${error.message}`,
+        }
+      );
+      console.log(response);
+      successNotification(
+        `You have successfully joined the game of game id ${(
+          toBigInt(id) + toBigInt(1)
+        ).toString()}`
+      );
+    } catch (error) {
+      console.log(error);
+      errorNotification(
+        error.message.slice(0, 300) ||
+          "Something went wrong while creating the game, please try again"
+      );
+    }
+  };
 
   const approve = async (amount) => {
     try {
       const signer = await getSigner();
       const contract = fetchTokenContract(signer);
       const tx = await contract.approve(gameAddress, amount);
-      // await tx.wait();
+      console.log(tx);
+      // const txr = await tx.provider.waitForTransaction(tx.hash, 1, 10000);
+      const response = await toast.promise(
+        tx.provider.waitForTransaction(tx.hash, 1, 10000),
+        {
+          pending: "Joining game...",
+          success: "Successfully approved the token!",
+          error: (error) => `Failed to join the game: ${error.message}`,
+        }
+      );
+      console.log(response);
+      // console.log(txr);
       successNotification(
         `You have successfully approved ${shortenAddress(
           gameAddress
@@ -97,5 +137,6 @@ export const writeFunctions = () => {
     isActive,
     currentAccount,
     createGame,
+    joinGame,
   };
 };
