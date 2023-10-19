@@ -4,6 +4,7 @@ const initialState = {
   currentAccount: "",
   availableGames: [],
   myCreatedGames: [],
+  myJoinedGames: [],
 };
 
 export const viewSlice = createSlice({
@@ -19,9 +20,16 @@ export const viewSlice = createSlice({
     setMyCreatedGames: (state, action) => {
       state.myCreatedGames = action.payload;
     },
+    setMyJoinedGames: (state, action) => {
+      state.myJoinedGames = action.payload;
+    },
   },
 });
-export const { setCurrentAccount, setAvailableGames, setMyCreatedGames } =
-  viewSlice.actions;
+export const {
+  setCurrentAccount,
+  setAvailableGames,
+  setMyCreatedGames,
+  setMyJoinedGames,
+} = viewSlice.actions;
 export const publicValue = (state) => state.viewFunctions.currentAccount;
 export default viewSlice.reducer;

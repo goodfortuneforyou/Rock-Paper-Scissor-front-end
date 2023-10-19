@@ -6,6 +6,7 @@ import {
   setAvailableGames,
   setCurrentAccount,
   setMyCreatedGames,
+  setMyJoinedGames,
 } from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
 import { ethers } from "ethers";
@@ -45,6 +46,9 @@ export const viewFunctions = () => {
   );
   const myCreatedGames = useSelector(
     (state) => state.viewFunctions.myCreatedGames
+  );
+  const myJoinedGames = useSelector(
+    (state) => state.viewFunctions.myJoinedGames
   );
 
   const fetchGameContract = (signerOrProvider) => {
@@ -113,7 +117,6 @@ export const viewFunctions = () => {
     }
   };
   const getMyCreatedGames = async () => {
-    // console.log(ethers);
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
@@ -144,6 +147,37 @@ export const viewFunctions = () => {
       console.log(error);
     }
   };
+  const getMyJoinedGames = async () => {
+    try {
+      const providers = new ethers.JsonRpcProvider(rpcProvider);
+      const contract = fetchGameContract(providers);
+      const data = await contract.getPlayersJoinedGamed(currentAccount);
+      const items = await Promise.all(
+        data.map(async ({ id, stakeAmount, players, state }) => {
+          console.log(
+            id.toString(),
+            stakeAmount.toString(),
+            players[0],
+            players[1],
+            state.toString()
+          );
+
+          return {
+            id: id.toString(),
+            stakeAmount: stakeAmount.toString(),
+            players,
+            state: state.toString(),
+          };
+          // eslint-disable-next-line comma-dangle
+        })
+      );
+      console.log(items, currentAccount);
+      dispatch(setMyJoinedGames(items));
+      return items;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return {
     account,
@@ -154,7 +188,9 @@ export const viewFunctions = () => {
     currentAccount,
     availableGames,
     myCreatedGames,
+    myJoinedGames,
     getAvailableGames,
     getMyCreatedGames,
+    getMyJoinedGames,
   };
 };
