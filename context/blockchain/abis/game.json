@@ -176,7 +176,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_player",
+        "type": "address"
+      }
+    ],
     "name": "getPlayersComitedGamed",
     "outputs": [
       {
@@ -211,7 +217,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_player",
+        "type": "address"
+      }
+    ],
     "name": "getPlayersJoinedGamed",
     "outputs": [
       {
@@ -248,6 +260,47 @@
   {
     "inputs": [],
     "name": "getRevealedGamed",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stakeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address[2]",
+            "name": "players",
+            "type": "address[2]"
+          },
+          {
+            "internalType": "enum RockPaperScissors.State",
+            "name": "state",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct RockPaperScissors.Game[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserCreatedGame",
     "outputs": [
       {
         "components": [

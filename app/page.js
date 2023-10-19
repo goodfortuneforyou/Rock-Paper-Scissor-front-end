@@ -23,7 +23,7 @@ function Home() {
       </div>
       <div className="flex flex-wrap justify-center mt-5 items-center">
         {availableGames &&
-          availableGames.length &&
+          availableGames.length > 0 &&
           availableGames.map((game) => <Card key={game.id} game={game} />)}
       </div>
     </div>
