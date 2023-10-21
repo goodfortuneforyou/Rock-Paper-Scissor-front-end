@@ -66,6 +66,38 @@ export const viewFunctions = () => {
     return new ethers.Contract(tokenAddress, tokenAbi, signerOrProvider);
   };
 
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) {
+        errorNotification("Please install MetaMask!");
+      }
+      console.log(isActive, account, isActivating);
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+      const id = parseInt(window.ethereum.chainId, 16);
+      if (accounts.length) {
+        if (!isActive) {
+          try {
+            await connector.activate(expectedChainId);
+          } catch (error) {
+            console.log(error);
+          }
+          console.log(isActive, account, isActivating);
+        }
+        dispatch(setCurrentAccount(accounts[0]));
+        // const web3modal = new Web3Modal();
+        // const connection = await web3modal.connect();
+        // const provider = new ethers.providers.Web3Provider(connection);
+        // const signer = provider.getSigner();
+      } else {
+        console.log("No accounts found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const connectWallet = async () => {
     console.log(signer, provider);
     if (isActive) {
@@ -260,6 +292,7 @@ export const viewFunctions = () => {
     isActivating,
     isActive,
     connectWallet,
+    checkIfWalletIsConnected,
     currentAccount,
     availableGames,
     myCreatedGames,

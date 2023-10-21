@@ -2,16 +2,13 @@
 import Card from "@/components/Card";
 import { viewFunctions } from "@/context/blockchain/viewFunctions";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 
 function Home() {
-  const count = useSelector((state) => state.counter.value);
   const { availableGames, getAvailableGames, getrevealedGames, revealedGames } =
     viewFunctions();
   useEffect(() => {
     getAvailableGames();
     getrevealedGames();
-    console.log(availableGames);
   }, []);
 
   if (availableGames.length == 0 && revealedGames.length == 0) {

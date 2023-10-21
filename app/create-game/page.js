@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import { writeFunctions } from "@/context/blockchain/writeFunctions";
-import { viewFunctions } from "@/context/blockchain/viewFunctions";
+import { useRouter } from "next/navigation";
 const CreateGame = () => {
   const { createGame } = writeFunctions();
   const [stakeAmount, setStakeAmount] = useState("");
+  const router = useRouter();
   return (
     <div className=" flex flex-col justify-center xs:space-y-5 sm:space-y-6 md:space-y-8 xm:space-y-9 lg:space-y-10 minmd:space-y-12 minlg:space-y-16 items-center min-h-screen text-black">
       <div className="flex flex-col bg-fuchsia-300 justify-evenly items-center shadow-xl rounded-xl xs:w-[300px] xs:h-[300px] sm:w-[330px] sm:h-[320px] md:w-[370px] md:h-[360px] xm:w-[400px] xm:h-[390px] lg:w-[430px] lg:h-[420px] minmd:w-[490px] minmd:h-[450px] minlg:w-[620px] minlg:h-[580px]">
@@ -24,7 +25,7 @@ const CreateGame = () => {
           <button
             type="button"
             className="bg-pink-600 hover:bg-pink-800 cursor-pointer xs:w-16 sm:w-20 md:w-20 xm:w-24 lg:w-28 minmd:w-32 minlg:w-36 md:px-2 xs:px-2 xm:px-3 lg:px-3 minmd:px-4 minlg:px-4 lg:py-1 minmd:py-2 minlg:py-3 rounded-lg minmd:rounded-2xl xs:text-sm sm:text-base md:text-lg xm:text-lg lg:text-xl minmd:text-2xl minlg:text-3xl font-bold"
-            onClick={() => createGame(stakeAmount)}
+            onClick={() => createGame(stakeAmount, router)}
           >
             Create
           </button>

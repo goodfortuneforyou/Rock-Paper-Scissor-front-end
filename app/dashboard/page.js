@@ -23,7 +23,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col justify-start text-black mt-5 items-center min-h-screen">
       <div>
-        <div className="flex border-b border-b-white xs:space-x-1">
+        <div className="flex border-b justify-center items-center border-b-white xs:space-x-1">
           <h1 className=" ">List of Your Created Game:</h1>
           <span
             className=" font-bold text-fuchsia-700 cursor-pointer hover:text-fuchsia-800"
@@ -40,7 +40,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-        <div className="flex border-b border-b-white xs:space-x-1">
+        <div className="flex border-b justify-center items-center border-b-white xs:space-x-1">
           <h1 className=" ">List of Your Joined Game:</h1>
           <span
             className=" font-bold text-fuchsia-700 cursor-pointer hover:text-fuchsia-800"
@@ -64,7 +64,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-        <div className="flex border-b border-b-white xs:space-x-1">
+        <div className="flex border-b justify-center items-center border-b-white xs:space-x-1">
           <h1 className=" ">List of Your Comitted Game:</h1>
           <span
             className=" font-bold text-fuchsia-700 cursor-pointer hover:text-fuchsia-800"

@@ -46,13 +46,17 @@ export const writeFunctions = () => {
     return new ethers.Contract(tokenAddress, tokenAbi, signerOrProvider);
   };
 
-  const createGame = async (amount) => {
+  const createGame = async (amount, router) => {
     try {
       const signer = await getSigner();
       // const contract = useContract(gameAbi, gameAddress);
       const contract = fetchGameContract(signer);
       const formattedAmount = ethers.parseEther(amount);
-      await approve(formattedAmount);
+      const tContract = fetchTokenContract(signer);
+      const allowance = await tContract.allowance(currentAccount, gameAddress);
+      if (allowance < formattedAmount) {
+        await approve(formattedAmount);
+      }
       const tx = await contract.createGame(formattedAmount);
       const id = await contract.getGameId();
       // console.log(tx);
@@ -61,6 +65,12 @@ export const writeFunctions = () => {
           toBigInt(id) + toBigInt(1)
         ).toString()}`
       );
+      successNotification(
+        "You will be redirect to home page in couple of secons"
+      );
+      setTimeout(() => {
+        router.push("/");
+      }, 5000);
     } catch (error) {
       console.log(error);
       errorNotification(
@@ -69,12 +79,18 @@ export const writeFunctions = () => {
       );
     }
   };
+
   const joinGame = async (id, amount) => {
     try {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
-      const formattedAmount = ethers.parseEther(amount);
-      await approve(amount);
+      // const formattedAmount = ethers.parseEther(amount);
+      const tContract = fetchTokenContract(signer);
+      const allowance = await tContract.allowance(currentAccount, gameAddress);
+      if (allowance < amount) {
+        console.log(amount, allowance, allowance < amount);
+        await approve(amount);
+      }
       const tx = await contract.joinGame(id);
       const response = await toast.promise(
         tx.provider.waitForTransaction(tx.hash, 1, 10000),
@@ -88,6 +104,9 @@ export const writeFunctions = () => {
       successNotification(
         `You have successfully joined the game of game id ${id.toString()}`
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     } catch (error) {
       console.log(error);
       errorNotification(
@@ -114,6 +133,9 @@ export const writeFunctions = () => {
       successNotification(
         `You have successfully commited the game of game id ${id.toString()}`
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     } catch (error) {
       console.log(error);
       errorNotification(
@@ -139,6 +161,9 @@ export const writeFunctions = () => {
       successNotification(
         `You have successfully revealed the game of game id ${id.toString()}`
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     } catch (error) {
       console.log(error);
       errorNotification(
