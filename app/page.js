@@ -15,7 +15,7 @@ function Home() {
 
   return (
     <div className="flex flex-col text-white xm:text-green-600 sm:text-blue-800 xs:text-red-600 min-h-screen py-2">
-      <div className="flex justify-center items-center mt-24">
+      <div className="flex flex-col justify-center items-center mt-24">
         <h1 className="xs:text-base sm:text-lg md:text-lg xm:text-xl lg:text-2xl minmd:text-3xl minlg:text-4xl text-center text-black font-extrabold">
           Welcome to the game! Here is the list of the available game which is
           waiting for you to join!

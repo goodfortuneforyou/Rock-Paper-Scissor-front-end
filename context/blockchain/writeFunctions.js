@@ -98,6 +98,57 @@ export const writeFunctions = () => {
       );
     }
   };
+  const commitGame = async (id, move, salt) => {
+    try {
+      const signer = await getSigner();
+      const contract = fetchGameContract(signer);
+      console.log(id, move, salt);
+      const tx = await contract.commitMove(id, move, salt);
+      const response = await toast.promise(
+        tx.provider.waitForTransaction(tx.hash, 1, 10000),
+        {
+          pending: "Commiting game...",
+          success: "Successfully commited the game!",
+          error: (error) => `Failed to commited the game: ${error.message}`,
+        }
+      );
+      console.log(response);
+      successNotification(
+        `You have successfully commited the game of game id ${id.toString()}`
+      );
+    } catch (error) {
+      console.log(error);
+      errorNotification(
+        error.message.slice(0, 300) ||
+          "Something went wrong while creating the game, please try again"
+      );
+    }
+  };
+  const revealGame = async (id, move, salt) => {
+    try {
+      const signer = await getSigner();
+      const contract = fetchGameContract(signer);
+      const tx = await contract.revealMove(id, move, salt);
+      const response = await toast.promise(
+        tx.provider.waitForTransaction(tx.hash, 1, 10000),
+        {
+          pending: "Commiting game...",
+          success: "Successfully commited the game!",
+          error: (error) => `Failed to commited the game: ${error.message}`,
+        }
+      );
+      console.log(response);
+      successNotification(
+        `You have successfully commited the game of game id ${id.toString()}`
+      );
+    } catch (error) {
+      console.log(error);
+      errorNotification(
+        error.message.slice(0, 300) ||
+          "Something went wrong while creating the game, please try again"
+      );
+    }
+  };
 
   const approve = async (amount) => {
     try {
@@ -138,5 +189,7 @@ export const writeFunctions = () => {
     currentAccount,
     createGame,
     joinGame,
+    commitGame,
+    revealGame,
   };
 };
