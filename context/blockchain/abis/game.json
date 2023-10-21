@@ -111,6 +111,11 @@
             "internalType": "enum RockPaperScissors.State",
             "name": "state",
             "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
           }
         ],
         "internalType": "struct RockPaperScissors.Game[]",
@@ -165,6 +170,11 @@
             "internalType": "enum RockPaperScissors.State",
             "name": "state",
             "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
           }
         ],
         "internalType": "struct RockPaperScissors.Game",
@@ -206,6 +216,11 @@
             "internalType": "enum RockPaperScissors.State",
             "name": "state",
             "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
           }
         ],
         "internalType": "struct RockPaperScissors.Game[]",
@@ -247,6 +262,11 @@
             "internalType": "enum RockPaperScissors.State",
             "name": "state",
             "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
           }
         ],
         "internalType": "struct RockPaperScissors.Game[]",
@@ -259,7 +279,7 @@
   },
   {
     "inputs": [],
-    "name": "getRevealedGamed",
+    "name": "getRevealedGames",
     "outputs": [
       {
         "components": [
@@ -282,6 +302,11 @@
             "internalType": "enum RockPaperScissors.State",
             "name": "state",
             "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
           }
         ],
         "internalType": "struct RockPaperScissors.Game[]",
@@ -323,6 +348,11 @@
             "internalType": "enum RockPaperScissors.State",
             "name": "state",
             "type": "uint8"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
           }
         ],
         "internalType": "struct RockPaperScissors.Game[]",

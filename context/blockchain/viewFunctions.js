@@ -100,7 +100,7 @@ export const viewFunctions = () => {
       console.log(g.toString());
       const data = await contract.getAvailableGame();
       const items = await Promise.all(
-        data.map(async ({ id, stakeAmount, players, state }) => {
+        data.map(async ({ id, stakeAmount, players, state, winner }) => {
           console.log(
             id.toString(),
             stakeAmount.toString(),
@@ -114,6 +114,7 @@ export const viewFunctions = () => {
             stakeAmount: stakeAmount.toString(),
             players,
             state: state.toString(),
+            winner,
           };
           // eslint-disable-next-line comma-dangle
         })
@@ -130,7 +131,7 @@ export const viewFunctions = () => {
       const contract = fetchGameContract(providers);
       const data = await contract.getUserCreatedGame(currentAccount);
       const items = await Promise.all(
-        data.map(async ({ id, stakeAmount, players, state }) => {
+        data.map(async ({ id, stakeAmount, players, state, winner }) => {
           console.log(
             id.toString(),
             stakeAmount.toString(),
@@ -144,6 +145,7 @@ export const viewFunctions = () => {
             stakeAmount: stakeAmount.toString(),
             players,
             state: state.toString(),
+            winner,
           };
           // eslint-disable-next-line comma-dangle
         })
@@ -161,7 +163,7 @@ export const viewFunctions = () => {
       const contract = fetchGameContract(providers);
       const data = await contract.getPlayersJoinedGamed(currentAccount);
       const items = await Promise.all(
-        data.map(async ({ id, stakeAmount, players, state }) => {
+        data.map(async ({ id, stakeAmount, players, state, winner }) => {
           console.log(
             id.toString(),
             stakeAmount.toString(),
@@ -175,6 +177,7 @@ export const viewFunctions = () => {
             stakeAmount: stakeAmount.toString(),
             players,
             state: state.toString(),
+            winner,
           };
           // eslint-disable-next-line comma-dangle
         })
@@ -192,7 +195,7 @@ export const viewFunctions = () => {
       const contract = fetchGameContract(providers);
       const data = await contract.getPlayersComitedGamed(currentAccount);
       const items = await Promise.all(
-        data.map(async ({ id, stakeAmount, players, state }) => {
+        data.map(async ({ id, stakeAmount, players, state, winner }) => {
           console.log(
             id.toString(),
             stakeAmount.toString(),
@@ -206,6 +209,7 @@ export const viewFunctions = () => {
             stakeAmount: stakeAmount.toString(),
             players,
             state: state.toString(),
+            winner,
           };
           // eslint-disable-next-line comma-dangle
         })
@@ -221,9 +225,9 @@ export const viewFunctions = () => {
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
-      const data = await contract.getRevealedGamed();
+      const data = await contract.getRevealedGames();
       const items = await Promise.all(
-        data.map(async ({ id, stakeAmount, players, state }) => {
+        data.map(async ({ id, stakeAmount, players, state, winner }) => {
           console.log(
             id.toString(),
             stakeAmount.toString(),
@@ -237,6 +241,7 @@ export const viewFunctions = () => {
             stakeAmount: stakeAmount.toString(),
             players,
             state: state.toString(),
+            winner,
           };
           // eslint-disable-next-line comma-dangle
         })
