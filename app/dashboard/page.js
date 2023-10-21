@@ -15,10 +15,13 @@ const Dashboard = () => {
   const [hideJoinedGame, setHideJoinedGame] = useState(false);
   const [hideComittedGame, setHideComittedGame] = useState(false);
   useEffect(() => {
-    getMyCreatedGames();
-    getMyJoinedGames();
-    getMyComittedGames();
-    console.log(myCreatedGames, myJoinedGames, myComittedGames);
+    const fetchData = async () => {
+      await getMyCreatedGames();
+      await getMyJoinedGames();
+      await getMyComittedGames();
+    };
+
+    fetchData();
   }, []);
   return (
     <div className="flex flex-col justify-start text-black mt-5 items-center min-h-screen">

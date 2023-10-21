@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { useDispatch } from "react-redux";
 import {
@@ -22,7 +21,7 @@ import {
 } from "./constants";
 import { toast } from "react-toastify";
 export const viewFunctions = () => {
-  const { connector, hooks, useContract, signer, provider } = useWeb3React();
+  const { connector, hooks } = useWeb3React();
   const {
     useSelectedAccount,
     useSelectedChainId,
@@ -62,20 +61,15 @@ export const viewFunctions = () => {
   const fetchGameContract = (signerOrProvider) => {
     return new ethers.Contract(gameAddress, gameAbi, signerOrProvider);
   };
-  const fetchTokenContract = (signerOrProvider) => {
-    return new ethers.Contract(tokenAddress, tokenAbi, signerOrProvider);
-  };
 
   const checkIfWalletIsConnected = async () => {
     try {
       if (!window.ethereum) {
         errorNotification("Please install MetaMask!");
       }
-      console.log(isActive, account, isActivating);
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
-      const id = parseInt(window.ethereum.chainId, 16);
       if (accounts.length) {
         if (!isActive) {
           try {
@@ -83,13 +77,8 @@ export const viewFunctions = () => {
           } catch (error) {
             console.log(error);
           }
-          console.log(isActive, account, isActivating);
         }
         dispatch(setCurrentAccount(accounts[0]));
-        // const web3modal = new Web3Modal();
-        // const connection = await web3modal.connect();
-        // const provider = new ethers.providers.Web3Provider(connection);
-        // const signer = provider.getSigner();
       } else {
         console.log("No accounts found");
       }
@@ -99,7 +88,6 @@ export const viewFunctions = () => {
   };
 
   const connectWallet = async () => {
-    console.log(signer, provider);
     if (isActive) {
       if (connector?.deactivate) {
         void connector.deactivate();
@@ -124,23 +112,12 @@ export const viewFunctions = () => {
   };
 
   const getAvailableGames = async () => {
-    // console.log(ethers);
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
-      const g = await contract.getGameId();
-      console.log(g.toString());
       const data = await contract.getAvailableGame();
       const items = await Promise.all(
         data.map(async ({ id, stakeAmount, players, state, winner }) => {
-          console.log(
-            id.toString(),
-            stakeAmount.toString(),
-            players[0],
-            players[1],
-            state.toString()
-          );
-
           return {
             id: id.toString(),
             stakeAmount: stakeAmount.toString(),
@@ -148,7 +125,6 @@ export const viewFunctions = () => {
             state: state.toString(),
             winner,
           };
-          // eslint-disable-next-line comma-dangle
         })
       );
       dispatch(setAvailableGames(items));
@@ -161,17 +137,13 @@ export const viewFunctions = () => {
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
-      const data = await contract.getUserCreatedGame(currentAccount);
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+      const account = currentAccount ? currentAccount : accounts[0];
+      const data = await contract.getUserCreatedGame(account);
       const items = await Promise.all(
         data.map(async ({ id, stakeAmount, players, state, winner }) => {
-          console.log(
-            id.toString(),
-            stakeAmount.toString(),
-            players[0],
-            players[1],
-            state.toString()
-          );
-
           return {
             id: id.toString(),
             stakeAmount: stakeAmount.toString(),
@@ -179,10 +151,8 @@ export const viewFunctions = () => {
             state: state.toString(),
             winner,
           };
-          // eslint-disable-next-line comma-dangle
         })
       );
-      console.log(items, currentAccount);
       dispatch(setMyCreatedGames(items));
       return items;
     } catch (error) {
@@ -193,17 +163,13 @@ export const viewFunctions = () => {
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
-      const data = await contract.getPlayersJoinedGamed(currentAccount);
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+      const account = currentAccount ? currentAccount : accounts[0];
+      const data = await contract.getPlayersJoinedGamed(account);
       const items = await Promise.all(
         data.map(async ({ id, stakeAmount, players, state, winner }) => {
-          console.log(
-            id.toString(),
-            stakeAmount.toString(),
-            players[0],
-            players[1],
-            state.toString()
-          );
-
           return {
             id: id.toString(),
             stakeAmount: stakeAmount.toString(),
@@ -211,10 +177,8 @@ export const viewFunctions = () => {
             state: state.toString(),
             winner,
           };
-          // eslint-disable-next-line comma-dangle
         })
       );
-      console.log(items, currentAccount);
       dispatch(setMyJoinedGames(items));
       return items;
     } catch (error) {
@@ -225,17 +189,13 @@ export const viewFunctions = () => {
     try {
       const providers = new ethers.JsonRpcProvider(rpcProvider);
       const contract = fetchGameContract(providers);
-      const data = await contract.getPlayersComitedGamed(currentAccount);
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+      const account = currentAccount ? currentAccount : accounts[0];
+      const data = await contract.getPlayersComitedGamed(account);
       const items = await Promise.all(
         data.map(async ({ id, stakeAmount, players, state, winner }) => {
-          console.log(
-            id.toString(),
-            stakeAmount.toString(),
-            players[0],
-            players[1],
-            state.toString()
-          );
-
           return {
             id: id.toString(),
             stakeAmount: stakeAmount.toString(),
@@ -243,10 +203,8 @@ export const viewFunctions = () => {
             state: state.toString(),
             winner,
           };
-          // eslint-disable-next-line comma-dangle
         })
       );
-      console.log(items, currentAccount);
       dispatch(setMyComittedGames(items));
       return items;
     } catch (error) {
@@ -260,14 +218,6 @@ export const viewFunctions = () => {
       const data = await contract.getRevealedGames();
       const items = await Promise.all(
         data.map(async ({ id, stakeAmount, players, state, winner }) => {
-          console.log(
-            id.toString(),
-            stakeAmount.toString(),
-            players[0],
-            players[1],
-            state.toString()
-          );
-
           return {
             id: id.toString(),
             stakeAmount: stakeAmount.toString(),
@@ -275,10 +225,8 @@ export const viewFunctions = () => {
             state: state.toString(),
             winner,
           };
-          // eslint-disable-next-line comma-dangle
         })
       );
-      console.log(items, currentAccount);
       dispatch(setRevealedGames(items));
       return items;
     } catch (error) {

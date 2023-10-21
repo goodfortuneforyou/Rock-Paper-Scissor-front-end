@@ -3,7 +3,7 @@ import { useState } from "react";
 import { writeFunctions } from "@/context/blockchain/writeFunctions";
 import { useRouter } from "next/navigation";
 const CreateGame = () => {
-  const { createGame } = writeFunctions();
+  const { createGame, claimCoin } = writeFunctions();
   const [stakeAmount, setStakeAmount] = useState("");
   const router = useRouter();
   return (
@@ -12,6 +12,12 @@ const CreateGame = () => {
         <h1 className=" font-bold xs:text-base sm:text-base md:text-lg xm:text-lg lg:text-xl minmd:text-2xl minlg:text-3xl">
           Create a game!
         </h1>
+        <div
+          className=" bg-purple-600 px-2 rounded-xl cursor-pointer"
+          onClick={() => claimCoin()}
+        >
+          Claim 100 RPC Coin Free
+        </div>
         <div className="flex flex-col justify-center items-center xs:space-y-5 sm:space-y-6 md:space-y-8 xm:space-y-9 lg:space-y-10 minmd:space-y-12 minlg:space-y-16">
           <div className="flex justify-center items-center xs:space-x-2 sm:space-x-3 space-x-5 xs:text-sm sm:text-base md:text-lg xm:text-lg lg:text-xl minmd:text-2xl minlg:text-3xl">
             <p>Game Price: </p>

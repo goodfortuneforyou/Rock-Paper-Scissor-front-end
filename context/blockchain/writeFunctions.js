@@ -1,21 +1,11 @@
-import { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-import { useDispatch } from "react-redux";
-import { setCurrentAccount } from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
 import { ethers, toBigInt } from "ethers";
-import {
-  expectedChainId,
-  gameAbi,
-  gameAddress,
-  rpcProvider,
-  tokenAbi,
-  tokenAddress,
-} from "./constants";
+import { gameAbi, gameAddress, tokenAbi, tokenAddress } from "./constants";
 import { toast } from "react-toastify";
 import { shortenAddress } from "@/utils/shortenAddress";
 export const writeFunctions = () => {
-  const { connector, hooks, useContract, provider, signer } = useWeb3React();
+  const { connector, hooks, provider, signer } = useWeb3React();
   const {
     useSelectedAccount,
     useSelectedChainId,
@@ -23,10 +13,8 @@ export const writeFunctions = () => {
     useSelectedIsActivating,
   } = hooks;
   const getSigner = () => {
-    // const { provider, signer } = useWeb3React();
     return signer || provider?.getSigner();
   };
-  const dispatch = useDispatch();
   const successNotification = (msg) => toast(msg);
   const errorNotification = (msg) => toast(msg);
 
@@ -49,7 +37,6 @@ export const writeFunctions = () => {
   const createGame = async (amount, router) => {
     try {
       const signer = await getSigner();
-      // const contract = useContract(gameAbi, gameAddress);
       const contract = fetchGameContract(signer);
       const formattedAmount = ethers.parseEther(amount);
       const tContract = fetchTokenContract(signer);
@@ -59,7 +46,11 @@ export const writeFunctions = () => {
       }
       const tx = await contract.createGame(formattedAmount);
       const id = await contract.getGameId();
-      // console.log(tx);
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+        pending: "Joining game...",
+        success: "Successfully joined the game!",
+        error: (error) => `Failed to join the game: ${error.message}`,
+      });
       successNotification(
         `You have successfully created a game of game id ${(
           toBigInt(id) + toBigInt(1)
@@ -84,23 +75,17 @@ export const writeFunctions = () => {
     try {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
-      // const formattedAmount = ethers.parseEther(amount);
       const tContract = fetchTokenContract(signer);
       const allowance = await tContract.allowance(currentAccount, gameAddress);
       if (allowance < amount) {
-        console.log(amount, allowance, allowance < amount);
         await approve(amount);
       }
       const tx = await contract.joinGame(id);
-      const response = await toast.promise(
-        tx.provider.waitForTransaction(tx.hash, 1, 10000),
-        {
-          pending: "Joining game...",
-          success: "Successfully joined the game!",
-          error: (error) => `Failed to join the game: ${error.message}`,
-        }
-      );
-      console.log(response);
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+        pending: "Joining game...",
+        success: "Successfully joined the game!",
+        error: (error) => `Failed to join the game: ${error.message}`,
+      });
       successNotification(
         `You have successfully joined the game of game id ${id.toString()}`
       );
@@ -119,17 +104,12 @@ export const writeFunctions = () => {
     try {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
-      console.log(id, move, salt);
       const tx = await contract.commitMove(id, move, salt);
-      const response = await toast.promise(
-        tx.provider.waitForTransaction(tx.hash, 1, 10000),
-        {
-          pending: "Commiting game...",
-          success: "Successfully commited the game!",
-          error: (error) => `Failed to commited the game: ${error.message}`,
-        }
-      );
-      console.log(response);
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+        pending: "Commiting game...",
+        success: "Successfully commited the game!",
+        error: (error) => `Failed to commited the game: ${error.message}`,
+      });
       successNotification(
         `You have successfully commited the game of game id ${id.toString()}`
       );
@@ -149,17 +129,37 @@ export const writeFunctions = () => {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
       const tx = await contract.revealMove(id, move, salt);
-      const response = await toast.promise(
-        tx.provider.waitForTransaction(tx.hash, 1, 10000),
-        {
-          pending: "Revealing game...",
-          success: "Successfully revealed the game!",
-          error: (error) => `Failed to revealed the game: ${error.message}`,
-        }
-      );
-      console.log(response);
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+        pending: "Revealing game...",
+        success: "Successfully revealed the game!",
+        error: (error) => `Failed to revealed the game: ${error.message}`,
+      });
       successNotification(
         `You have successfully revealed the game of game id ${id.toString()}`
+      );
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    } catch (error) {
+      console.log(error);
+      errorNotification(
+        error.message.slice(0, 300) ||
+          "Something went wrong while revealed the game, please try again"
+      );
+    }
+  };
+  const claimCoin = async () => {
+    try {
+      const signer = await getSigner();
+      const contract = fetchGameContract(signer);
+      const tx = await contract.claimFreeToken();
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+        pending: " Claiming Coin...",
+        success: "Successfully claimed game coin!",
+        error: (error) => `Failed to claim coin: ${error.message}`,
+      });
+      successNotification(
+        `You have successfully claimed coin for free, enjoy gaming`
       );
       setTimeout(() => {
         window.location.reload();
@@ -177,21 +177,12 @@ export const writeFunctions = () => {
     try {
       const signer = await getSigner();
       const contract = fetchTokenContract(signer);
-      const bal = await contract.balanceOf(gameAddress);
-      console.log(bal);
       const tx = await contract.approve(gameAddress, amount);
-      console.log(tx);
-      // const txr = await tx.provider.waitForTransaction(tx.hash, 1, 10000);
-      const response = await toast.promise(
-        tx.provider.waitForTransaction(tx.hash, 1, 10000),
-        {
-          pending: "Joining game...",
-          success: "Successfully approved the token!",
-          error: (error) => `Failed to join the game: ${error.message}`,
-        }
-      );
-      console.log(response);
-      // console.log(txr);
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+        pending: "Joining game...",
+        success: "Successfully approved the token!",
+        error: (error) => `Failed to join the game: ${error.message}`,
+      });
       successNotification(
         `You have successfully approved ${shortenAddress(
           gameAddress
@@ -216,5 +207,6 @@ export const writeFunctions = () => {
     joinGame,
     commitGame,
     revealGame,
+    claimCoin,
   };
 };
