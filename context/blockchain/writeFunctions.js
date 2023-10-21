@@ -46,10 +46,10 @@ export const writeFunctions = () => {
       }
       const tx = await contract.createGame(formattedAmount);
       const id = await contract.getGameId();
-      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
-        pending: "Joining game...",
-        success: "Successfully joined the game!",
-        error: (error) => `Failed to join the game: ${error.message}`,
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 100000), {
+        pending: "Creating game...",
+        success: "You have Successfully created a game!",
+        error: (error) => `Failed to create the game: ${error.message}`,
       });
       successNotification(
         `You have successfully created a game of game id ${(
@@ -81,7 +81,7 @@ export const writeFunctions = () => {
         await approve(amount);
       }
       const tx = await contract.joinGame(id);
-      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 100000), {
         pending: "Joining game...",
         success: "Successfully joined the game!",
         error: (error) => `Failed to join the game: ${error.message}`,
@@ -105,10 +105,10 @@ export const writeFunctions = () => {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
       const tx = await contract.commitMove(id, move, salt);
-      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
-        pending: "Commiting game...",
-        success: "Successfully commited the game!",
-        error: (error) => `Failed to commited the game: ${error.message}`,
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 100000), {
+        pending: "Commiting move...",
+        success: "Successfully commited the move!",
+        error: (error) => `Failed to commited the move: ${error.message}`,
       });
       successNotification(
         `You have successfully commited the game of game id ${id.toString()}`
@@ -129,7 +129,7 @@ export const writeFunctions = () => {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
       const tx = await contract.revealMove(id, move, salt);
-      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 100000), {
         pending: "Revealing game...",
         success: "Successfully revealed the game!",
         error: (error) => `Failed to revealed the game: ${error.message}`,
@@ -153,7 +153,7 @@ export const writeFunctions = () => {
       const signer = await getSigner();
       const contract = fetchGameContract(signer);
       const tx = await contract.claimFreeToken();
-      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 100000), {
         pending: " Claiming Coin...",
         success: "Successfully claimed game coin!",
         error: (error) => `Failed to claim coin: ${error.message}`,
@@ -178,10 +178,10 @@ export const writeFunctions = () => {
       const signer = await getSigner();
       const contract = fetchTokenContract(signer);
       const tx = await contract.approve(gameAddress, amount);
-      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 10000), {
-        pending: "Joining game...",
-        success: "Successfully approved the token!",
-        error: (error) => `Failed to join the game: ${error.message}`,
+      await toast.promise(tx.provider.waitForTransaction(tx.hash, 1, 100000), {
+        pending: "Approving token...",
+        success: "You have Successfully approved the token!",
+        error: (error) => `Failed to approve the token: ${error.message}`,
       });
       successNotification(
         `You have successfully approved ${shortenAddress(
