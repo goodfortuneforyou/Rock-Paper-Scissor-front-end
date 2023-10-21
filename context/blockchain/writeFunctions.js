@@ -86,15 +86,13 @@ export const writeFunctions = () => {
       );
       console.log(response);
       successNotification(
-        `You have successfully joined the game of game id ${(
-          toBigInt(id) + toBigInt(1)
-        ).toString()}`
+        `You have successfully joined the game of game id ${id.toString()}`
       );
     } catch (error) {
       console.log(error);
       errorNotification(
         error.message.slice(0, 300) ||
-          "Something went wrong while creating the game, please try again"
+          "Something went wrong while joinig the game, please try again"
       );
     }
   };
@@ -120,7 +118,7 @@ export const writeFunctions = () => {
       console.log(error);
       errorNotification(
         error.message.slice(0, 300) ||
-          "Something went wrong while creating the game, please try again"
+          "Something went wrong while commited the game, please try again"
       );
     }
   };
@@ -132,20 +130,20 @@ export const writeFunctions = () => {
       const response = await toast.promise(
         tx.provider.waitForTransaction(tx.hash, 1, 10000),
         {
-          pending: "Commiting game...",
-          success: "Successfully commited the game!",
-          error: (error) => `Failed to commited the game: ${error.message}`,
+          pending: "Revealing game...",
+          success: "Successfully revealed the game!",
+          error: (error) => `Failed to revealed the game: ${error.message}`,
         }
       );
       console.log(response);
       successNotification(
-        `You have successfully commited the game of game id ${id.toString()}`
+        `You have successfully revealed the game of game id ${id.toString()}`
       );
     } catch (error) {
       console.log(error);
       errorNotification(
         error.message.slice(0, 300) ||
-          "Something went wrong while creating the game, please try again"
+          "Something went wrong while revealed the game, please try again"
       );
     }
   };
@@ -154,6 +152,8 @@ export const writeFunctions = () => {
     try {
       const signer = await getSigner();
       const contract = fetchTokenContract(signer);
+      const bal = await contract.balanceOf(gameAddress);
+      console.log(bal);
       const tx = await contract.approve(gameAddress, amount);
       console.log(tx);
       // const txr = await tx.provider.waitForTransaction(tx.hash, 1, 10000);

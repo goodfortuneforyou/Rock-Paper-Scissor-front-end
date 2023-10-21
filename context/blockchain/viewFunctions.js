@@ -8,6 +8,7 @@ import {
   setMyComittedGames,
   setMyCreatedGames,
   setMyJoinedGames,
+  setRevealedGames,
 } from "../slices/viewFunctions/viewSlice";
 import { useSelector } from "react-redux";
 import { ethers } from "ethers";
@@ -53,6 +54,9 @@ export const viewFunctions = () => {
   );
   const myComittedGames = useSelector(
     (state) => state.viewFunctions.myComittedGames
+  );
+  const revealedGames = useSelector(
+    (state) => state.viewFunctions.revealedGames
   );
 
   const fetchGameContract = (signerOrProvider) => {
@@ -213,6 +217,37 @@ export const viewFunctions = () => {
       console.log(error);
     }
   };
+  const getrevealedGames = async () => {
+    try {
+      const providers = new ethers.JsonRpcProvider(rpcProvider);
+      const contract = fetchGameContract(providers);
+      const data = await contract.getRevealedGamed();
+      const items = await Promise.all(
+        data.map(async ({ id, stakeAmount, players, state }) => {
+          console.log(
+            id.toString(),
+            stakeAmount.toString(),
+            players[0],
+            players[1],
+            state.toString()
+          );
+
+          return {
+            id: id.toString(),
+            stakeAmount: stakeAmount.toString(),
+            players,
+            state: state.toString(),
+          };
+          // eslint-disable-next-line comma-dangle
+        })
+      );
+      console.log(items, currentAccount);
+      dispatch(setRevealedGames(items));
+      return items;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return {
     account,
@@ -225,9 +260,11 @@ export const viewFunctions = () => {
     myCreatedGames,
     myJoinedGames,
     myComittedGames,
+    revealedGames,
     getAvailableGames,
     getMyCreatedGames,
     getMyJoinedGames,
     getMyComittedGames,
+    getrevealedGames,
   };
 };

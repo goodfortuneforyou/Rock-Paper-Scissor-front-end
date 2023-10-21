@@ -49,7 +49,7 @@ const Dashboard = () => {
             {hideJoinedGame == false ? "Hide List" : "Show List"}
           </span>
         </div>
-        {!hideJoinedGame && (
+        {!hideJoinedGame && myJoinedGames && myJoinedGames.length > 0 && (
           <div className="flex flex-col mt-2 xs:text-base sm:text-lg md:text-lg xm:text-xl lg:text-2xl minmd:text-3xl minlg:text-4xl text-center text-black font-extrabold">
             <span>1 = Rock</span>
             <span>2 = Paper</span>
@@ -75,9 +75,9 @@ const Dashboard = () => {
         </div>
         <div className="flex flex-wrap justify-center mt-5 items-center">
           {!hideComittedGame &&
-            hideComittedGame &&
-            hideComittedGame.length > 0 &&
-            hideComittedGame.map((game) => <Card key={game.id} game={game} />)}
+            myComittedGames &&
+            myComittedGames.length > 0 &&
+            myComittedGames.map((game) => <Card key={game.id} game={game} />)}
         </div>
       </div>
     </div>
