@@ -1,5 +1,6 @@
 "use client";
 import "../styles/globals.css";
+import Head from "next/head";
 import { Inter } from "next/font/google";
 import { Web3ReactProvider } from "@web3-react/core";
 import { ToastContainer } from "react-toastify";
@@ -8,16 +9,16 @@ import { connectors } from "../connectors";
 import { store } from "../context/store";
 import { Provider } from "react-redux";
 import Navbar from "@/components/Nav";
+import { metadata } from "@/components/metadata";
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata = {
-  title: "Rock Paper Scissor",
-  description: "A Defi Rock Paper Scissor game",
-};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+      </Head>
       <body className={inter.className}>
         <Web3ReactProvider connectors={connectors}>
           <ToastContainer
