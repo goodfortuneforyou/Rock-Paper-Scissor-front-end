@@ -13,7 +13,7 @@ const CreateGame = () => {
           Create a game!
         </h1>
         <div
-          className=" bg-purple-600 px-2 rounded-xl cursor-pointer"
+          className=" bg-purple-600 hover:bg-purple-700 px-2 rounded-xl cursor-pointer xs:text-base sm:text-base md:text-lg xm:text-lg lg:text-xl minmd:text-2xl minlg:text-3xl"
           onClick={() => claimCoin()}
         >
           Claim 100 RPC Coin Free
