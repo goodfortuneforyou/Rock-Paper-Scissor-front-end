@@ -1,5 +1,6 @@
 "use client";
 import { shortenAddress } from "@/utils/shortenAddress";
+
 import { ethers } from "ethers";
 import { useState } from "react";
 import { writeFunctions } from "@/context/blockchain/writeFunctions";
